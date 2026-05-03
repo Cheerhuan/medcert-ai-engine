@@ -1,0 +1,43 @@
+{
+  "domain": "Medical Device",
+  "regulation": "FDA 510(k)",
+  "version": "1.0.0",
+  "constraints": {
+    "structural": {
+      "required_sections": [
+        "Device Description",
+        "Indications for Use",
+        "Predicate Device",
+        "Technological Comparison",
+        "Performance Testing",
+        "Conclusion"
+      ],
+      "mandatory_elements": {
+        "predicate": "K-number of the predicate device",
+        "performance": "Standard used (e.g., ISO/IEC), Sample size (N), Quantified results"
+      }
+    },
+    "linguistic": {
+      "forbidden_terms": [
+        "innovative", "revolutionary", "best", "superior", "cutting-edge", "game-changer"
+      ],
+      "mandatory_terms": [
+        "substantially equivalent", "non-invasive", "validated according to", "indicated for"
+      ]
+    },
+    "data_validation": {
+      "metrics_required": [
+        "mean_error",
+        "standard_deviation",
+        "sample_size",
+        "p_value"
+      ],
+      "standard_references": [
+        "ISO",
+        "IEC",
+        "ASTM",
+        "AAMI"
+      ]
+    }
+  }
+}
