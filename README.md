@@ -18,6 +18,17 @@
 
 <br/>
 
+> [!CAUTION]
+> ## ⚠️ Critical Safety Warning | 關鍵安全警告
+> **MedCert AI is an ASSISTANT tool, NOT a replacement for professional regulatory experts.** 
+> **MedCert AI 是一個「輔助工具」，而非專業監管專家的替代品。**
+> 
+> The generated documents are drafts for review purposes only. All technical data, claims, and regulatory alignments MUST be verified and signed off by a certified Quality Assurance (QA) or Regulatory Affairs (RA) professional before any official submission.
+> 
+> 所有生成的文檔僅供審核之用。在進行任何正式提交前，所有技術數據、聲明與合規對齊 **必須** 由認證的品質管理 (QA) 或法規事務 (RA) 專業人員進行驗證並簽名確認。
+
+<br/>
+
 ## 📖 Overview | 專案概述
 
 **MedCert AI** is not a generic text generator; it is a **Constraint-Based Assembly Pipeline**. It solves the most critical pain point in medical device submissions: the risk of AI hallucinations in regulatory documentation.

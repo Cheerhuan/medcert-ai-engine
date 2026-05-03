@@ -10,6 +10,7 @@
             --panel: #0f0f0f;
             --accent: #00ffaa;
             --error: #ff4d4d;
+            --warning: #ffcc00;
             --text: #e0e0e0;
             --muted: #666;
             --border: #222;
@@ -49,6 +50,17 @@
             color: var(--accent);
             border-radius: 100px;
             text-transform: uppercase;
+        }
+
+        /* Safety Banner */
+        .safety-banner {
+            background-color: #2a1a00;
+            color: #ffcc00;
+            padding: 0.5rem 2rem;
+            font-size: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid #4a3a00;
+            font-weight: 600;
         }
 
         /* Main Layout */
@@ -126,7 +138,7 @@
             animation: slideIn 0.3s ease-out;
         }
         .log-success { color: var(--accent); border-color: var(--accent); }
-        .log-warn { color: #ffcc00; border-color: #ffcc00; }
+        .log-warn { color: var(--warning); border-color: var(--warning); }
         .log-error { color: var(--error); border-color: var(--error); }
 
         /* Output Zone */
@@ -171,6 +183,10 @@
         <div class="logo"><span>◈</span> MEDCERT AI <span style="font-weight: 300; opacity: 0.6;">Industrial Engine</span></div>
         <div class="status-badge">System Ready</div>
     </header>
+
+    <div class="safety-banner">
+        ⚠️ WARNING: FOR REVIEW PURPOSES ONLY. ALL OUTPUTS MUST BE VERIFIED BY A CERTIFIED REGULATORY PROFESSIONAL.
+    </div>
 
     <main>
         <!-- Input -->
@@ -242,7 +258,6 @@
                 logArea.scrollTop = logArea.scrollHeight;
             }
 
-            // Simulated Output based on logic
             docContent.innerHTML = `
                 <p><strong>1. Device Description</strong><br>
                 The device is a non-invasive medical instrument intended for physiological monitoring. The system incorporates high-precision sensors validated against industrial standards.</p>
