@@ -152,7 +152,7 @@
         <div class="container">
             <span class="section-tag">AI-Powered Clinical Simulation</span>
             <h1 id="hero-title" style="font-size: 4rem; color: var(--dark); margin-bottom: 1.5rem; letter-spacing: -0.03em;">Pass Your OSCE <br/><span style="color: var(--primary)">3x Faster</span> with AI Patients</h1>
-            <p>Stop stressing about unpredictable exams. Practice realistic patient interactions, get instant expert feedback, and build unshakeable clinical confidence.</p>
+            <p id="hero-sub" style="font-size: 1.25rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 2.5rem;">Stop stressing about unpredictable exams. Practice realistic patient interactions, get instant expert feedback, and build unshakeable clinical confidence.</p>
             <div class="cta-group">
                 <a href="#" id="hero-cta" class="btn btn-primary">Start Free Practice</a>
                 <a href="#demo" class="btn btn-secondary">Try Demo Case</a>
@@ -331,5 +331,31 @@
         </div>
     </footer>
 
-</body>
+    <script>
+        const i18n = {
+            'zh-TW': {
+                'hero-title': '透過 AI 模擬病人 <br/><span style="color: var(--primary)">3倍速</span> 通過 OSCE 考試',
+                'hero-sub': '擺脫對不可預測考試的焦慮。練習真實的病人互動，獲得即時專家反饋，建立不可撼動的臨床信心。',
+                'hero-cta': '立即開始免費練習'
+            },
+            'en': {
+                'hero-title': 'Pass Your OSCE <br/><span style="color: var(--primary)">3x Faster</span> with AI Patients',
+                'hero-sub': 'Stop stressing about unpredictable exams. Practice realistic patient interactions, get instant expert feedback, and build unshakeable clinical confidence.',
+                'hero-cta': 'Start Free Practice'
+            }
+        };
+
+        function applyTranslation() {
+            const lang = navigator.language.startsWith("zh") ? "zh-TW" : "en";
+            const dict = i18n[lang];
+            
+            Object.keys(dict).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = dict[id];
+            });
+        }
+        
+        document.addEventListener("DOMContentLoaded", applyTranslation);
+    </script>
+    </body>
 </html>
