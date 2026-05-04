@@ -4,27 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedCert AI | Industrial Compliance Workstation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Plus+Jakarta+Sans:wght@700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --panel: #0f0f0f;
-            --accent: #00ffaa;
-            --error: #ff4d4d;
-            --warning: #ffcc00;
-            --text: #e0e0e0;
-            --muted: #666;
-            --border: #222;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --accent: #dbeafe;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
         }
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--light);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
             margin: 0;
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
+        h1, h2, h3, .panel-header { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-weight: 800; 
+        }
+
         /* Header */
         header {
             padding: 1rem 2rem;
@@ -32,13 +45,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(to right, #0f0f0f, #050505);
+            background: var(--white);
+            z-index: 100;
         }
         .logo {
             font-weight: 800;
             font-size: 1.2rem;
-            letter-spacing: -0.05em;
-            color: var(--accent);
+            color: var(--primary);
+            text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -46,20 +60,22 @@
         .status-badge {
             font-size: 0.7rem;
             padding: 0.2rem 0.6rem;
-            border: 1px solid var(--accent);
-            color: var(--accent);
+            border: 1px solid var(--primary);
+            color: var(--primary);
             border-radius: 100px;
             text-transform: uppercase;
+            font-weight: 600;
+            background: var(--accent);
         }
 
         /* Safety Banner */
         .safety-banner {
-            background-color: #2a1a00;
-            color: #ffcc00;
+            background-color: #fffbeb;
+            color: #92400e;
             padding: 0.5rem 2rem;
             font-size: 0.75rem;
             text-align: center;
-            border-bottom: 1px solid #4a3a00;
+            border-bottom: 1px solid #fde68a;
             font-weight: 600;
         }
 
@@ -67,26 +83,34 @@
         main {
             display: grid;
             grid-template-columns: 350px 1fr 450px;
-            gap: 1px;
-            background-color: var(--border);
+            gap: 1.5rem;
+            padding: 1.5rem;
             flex: 1;
             overflow: hidden;
         }
         .panel {
-            background-color: var(--panel);
+            background-color: var(--white);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s;
+        }
+        .panel:focus-within {
+            border-color: var(--primary);
         }
         .panel-header {
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.5rem;
             font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--muted);
+            color: var(--text-muted);
             text-transform: uppercase;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
         }
 
         /* Input Zone */
@@ -99,56 +123,75 @@
         }
         textarea {
             flex: 1;
-            background: #000;
+            background: var(--white);
             border: 1px solid var(--border);
-            color: var(--text);
+            color: var(--text-main);
             padding: 1rem;
-            font-family: 'Fira Code', monospace;
+            font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
             resize: none;
             outline: none;
-            transition: border 0.3s;
+            border-radius: 12px;
+            transition: all 0.3s;
         }
-        textarea:focus { border-color: var(--accent); }
+        textarea:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
         .btn-process {
-            background: var(--accent);
-            color: #000;
+            background: var(--primary);
+            color: white;
             border: none;
             padding: 1rem;
             font-weight: 800;
             cursor: pointer;
             text-transform: uppercase;
+            border-radius: 12px;
             letter-spacing: 0.05em;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        .btn-process:hover { opacity: 0.9; }
+        .btn-process:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
 
         /* Engine Zone */
         .engine-area {
-            padding: 2rem;
+            padding: 1.5rem;
             overflow-y: auto;
-            background: radial-gradient(circle at center, #111 0%, #050505 100%);
+            background: #fcfcfd;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
         .log-entry {
             font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            border-left: 2px solid var(--border);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--border);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left-width: 4px;
             animation: slideIn 0.3s ease-out;
         }
-        .log-success { color: var(--accent); border-color: var(--accent); }
-        .log-warn { color: var(--warning); border-color: var(--warning); }
-        .log-error { color: var(--error); border-color: var(--error); }
+        .log-info { color: var(--text-main); border-left-color: var(--secondary); }
+        .log-success { color: var(--success); border-left-color: var(--success); background: #f0fdf4; }
+        .log-warn { color: var(--warning); border-left-color: var(--warning); background: #fffbeb; }
+        .log-error { color: var(--error); border-left-color: var(--error); background: #fef2f2; }
 
         /* Output Zone */
         .output-area {
-            padding: 2rem;
-            background: #fff;
+            padding: 2.5rem;
+            background: var(--white);
             color: #333;
             overflow-y: auto;
             font-family: 'Times New Roman', serif;
             position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
         }
         .doc-header {
             text-align: center;
@@ -156,13 +199,13 @@
             margin-bottom: 2rem;
             padding-bottom: 1rem;
         }
-        .doc-header h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; }
+        .doc-header h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; font-family: 'Plus Jakarta Sans', sans-serif; }
         .cert-stamp {
             position: absolute;
             top: 2rem;
             right: 2rem;
-            border: 3px double #00aa00;
-            color: #00aa00;
+            border: 3px double #10b981;
+            color: #10b981;
             padding: 0.5rem;
             font-weight: 800;
             transform: rotate(15deg);
@@ -170,6 +213,7 @@
             transition: opacity 0.5s;
             text-transform: uppercase;
             font-family: sans-serif;
+            font-size: 0.8rem;
         }
 
         @keyframes slideIn {
@@ -180,7 +224,7 @@
 </head>
 <body>
     <header>
-        <div class="logo"><span>◈</span> MEDCERT AI <span style="font-weight: 300; opacity: 0.6;">Industrial Engine</span></div>
+        <div class="logo"><span>◈</span> MEDCERT AI <span style="font-weight: 300; opacity: 0.6; font-size: 0.9rem; margin-left: 0.5rem;">Compliance Workstation</span></div>
         <div class="status-badge">System Ready</div>
     </header>
 
@@ -191,24 +235,24 @@
     <main>
         <!-- Input -->
         <div class="panel">
-            <div class="panel-header">Engineering Input <span>RAW</span></div>
+            <div class="panel-header">Engineering Input <span>RAW DATA</span></div>
             <div class="input-area">
-                <textarea id="inputData" placeholder="Enter fragmented technical data here..."></textarea>
+                <textarea id="inputData" placeholder="Enter fragmented technical data here... Example: BP-Next Gen, accuracy 2.5mmHg, ISO 81060, N=85..."></textarea>
                 <button class="btn-process" onclick="startProcessing()">Run Mapping Engine</button>
             </div>
         </div>
 
         <!-- Engine -->
         <div class="panel">
-            <div class="panel-header">Compliance Engine <span>LIVE LOG</span></div>
+            <div class="panel-header">Compliance Engine <span>LIVE LOGS</span></div>
             <div class="engine-area" id="logArea">
-                <div class="log-entry" style="color: var(--muted)">Waiting for input...</div>
+                <div class="log-entry log-info" style="color: var(--text-muted)">Waiting for input to initialize engine...</div>
             </div>
         </div>
 
         <!-- Output -->
         <div class="panel">
-            <div class="panel-header">FDA 510(k) Output <span>CERTIFIED</span></div>
+            <div class="panel-header">FDA 510(k) Output <span>CERTIFIED DOC</span></div>
             <div class="output-area" id="outputArea">
                 <div class="cert-stamp" id="stamp">VERIFIED<br>ZERO-HALLUCINATION</div>
                 <div class="doc-header">
@@ -246,13 +290,13 @@
             const stamp = document.getElementById('stamp');
             
             logArea.innerHTML = "";
-            docContent.innerHTML = "Processing...";
+            docContent.innerHTML = "Generating certified document...";
             stamp.style.opacity = "0";
 
             for (let log of logs) {
                 await new Promise(r => setTimeout(r, Math.random() * 600 + 300));
                 const div = document.createElement('div');
-                div.className = `log-entry ${log.type === 'success' ? 'log-success' : log.type === 'warn' ? 'log-warn' : ''}`;
+                div.className = `log-entry log-${log.type}`;
                 div.innerText = `> ${log.msg}`;
                 logArea.appendChild(div);
                 logArea.scrollTop = logArea.scrollHeight;
