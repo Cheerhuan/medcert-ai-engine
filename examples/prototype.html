@@ -224,40 +224,49 @@
 </head>
 <body>
     <header>
-        <div class="logo"><span>◈</span> MEDCERT AI <span style="font-weight: 300; opacity: 0.6; font-size: 0.9rem; margin-left: 0.5rem;">Compliance Workstation</span></div>
-        <div class="status-badge">System Ready</div>
+        <div class="logo"><span>◈</span> MEDCERT AI <span id="logo-sub" style="font-weight: 300; opacity: 0.6; font-size: 0.9rem; margin-left: 0.5rem;">Compliance Workstation</span></div>
+        <div id="status-badge" class="status-badge">System Ready</div>
     </header>
 
-    <div class="safety-banner">
+    <div id="safety-banner" class="safety-banner">
         ⚠️ WARNING: FOR REVIEW PURPOSES ONLY. ALL OUTPUTS MUST BE VERIFIED BY A CERTIFIED REGULATORY PROFESSIONAL.
     </div>
 
     <main>
         <!-- Input -->
         <div class="panel">
-            <div class="panel-header">Engineering Input <span>RAW DATA</span></div>
+            <div class="panel-header">
+                <span id="input-title">Engineering Input</span>
+                <span id="input-subtitle">RAW DATA</span>
+            </div>
             <div class="input-area">
-                <textarea id="inputData" placeholder="Enter fragmented technical data here... Example: BP-Next Gen, accuracy 2.5mmHg, ISO 81060, N=85..."></textarea>
-                <button class="btn-process" onclick="startProcessing()">Run Mapping Engine</button>
+                <textarea id="inputData" placeholder="Enter fragmented technical data here..."></textarea>
+                <button id="btn-run" class="btn-process" onclick="startProcessing()">Run Mapping Engine</button>
             </div>
         </div>
 
         <!-- Engine -->
         <div class="panel">
-            <div class="panel-header">Compliance Engine <span>LIVE LOGS</span></div>
+            <div class="panel-header">
+                <span id="engine-title">Compliance Engine</span>
+                <span id="engine-subtitle">LIVE LOGS</span>
+            </div>
             <div class="engine-area" id="logArea">
-                <div class="log-entry log-info" style="color: var(--text-muted)">Waiting for input to initialize engine...</div>
+                <div id="log-waiting" class="log-entry log-info" style="color: var(--text-muted)">Waiting for input to initialize engine...</div>
             </div>
         </div>
 
         <!-- Output -->
         <div class="panel">
-            <div class="panel-header">FDA 510(k) Output <span>CERTIFIED DOC</span></div>
+            <div class="panel-header">
+                <span id="output-title">FDA 510(k) Output</span>
+                <span id="output-subtitle">CERTIFIED DOC</span>
+            </div>
             <div class="output-area" id="outputArea">
                 <div class="cert-stamp" id="stamp">VERIFIED<br>ZERO-HALLUCINATION</div>
                 <div class="doc-header">
-                    <h1>510(k) Premarket Notification</h1>
-                    <div style="font-size: 0.8rem;">U.S. Food and Drug Administration</div>
+                    <h1 id="doc-title">510(k) Premarket Notification</h1>
+                    <div id="doc-agency" style="font-size: 0.8rem;">U.S. Food and Drug Administration</div>
                 </div>
                 <div id="docContent" style="font-size: 0.9rem; line-height: 1.6;">
                     Enter data to generate certified documentation...
@@ -267,33 +276,110 @@
     </main>
 
     <script>
-        const logs = [
-            { msg: "Initializing Mapping Engine...", type: "info" },
-            { msg: "Loading FDA 510(k) Constraint Library v1.0...", type: "info" },
-            { msg: "Scanning input for critical parameters...", type: "info" },
-            { msg: "Analyzing Substantial Equivalence (SE)...", type: "info" },
-            { msg: "DETECTED: Missing Predicate K-number. Applying constraint...", type: "warn" },
-            { msg: "Filtering forbidden marketing terms...", type: "info" },
-            { msg: "Cross-referencing with ISO 81060-2:2018...", type: "info" },
-            { msg: "Running Zero-Hallucination Verification Loop...", type: "info" },
-            { msg: "Verifying numeric consistency... [OK]", type: "success" },
-            { msg: "Structural Integrity Check... [OK]", type: "success" },
-            { msg: "Document Certified. Ready for output.", type: "success" }
-        ];
+        const i18n = {
+            'zh-TW': {
+                'logo-sub': '合規工作站',
+                'status-badge': '系統就緒',
+                'safety-banner': '⚠️ 警告：本系統僅供審查使用。所有輸出結果必須由認證的監管專業人員核實。',
+                'input-title': '工程輸入',
+                'input-subtitle': '原始數據',
+                'input-placeholder': '請在此輸入碎片化的技術數據... 例如：BP-Next Gen, accuracy 2.5mmHg, ISO 81060, N=85...',
+                'btn-run': '運行映射引擎',
+                'engine-title': '合規引擎',
+                'engine-subtitle': '實時日誌',
+                'log-waiting': '等待輸入以初始化引擎...',
+                'output-title': 'FDA 510(k) 輸出',
+                'output-subtitle': '認證文件',
+                'doc-title': '510(k) 市前通知',
+                'doc-agency': '美國食品藥品監督管理局 (FDA)',
+                'doc-placeholder': '輸入數據以生成認證文件...',
+                'processing': '正在生成認證文件...'
+            },
+            'en': {
+                'logo-sub': 'Compliance Workstation',
+                'status-badge': 'System Ready',
+                'safety-banner': '⚠️ WARNING: FOR REVIEW PURPOSES ONLY. ALL OUTPUTS MUST BE VERIFIED BY A CERTIFIED REGULATORY PROFESSIONAL.',
+                'input-title': 'Engineering Input',
+                'input-subtitle': 'RAW DATA',
+                'input-placeholder': 'Enter fragmented technical data here... Example: BP-Next Gen, accuracy 2.5mmHg, ISO 81060, N=85...',
+                'btn-run': 'Run Mapping Engine',
+                'engine-title': 'Compliance Engine',
+                'engine-subtitle': 'LIVE LOGS',
+                'log-waiting': 'Waiting for input to initialize engine...',
+                'output-title': 'FDA 510(k) Output',
+                'output-subtitle': 'CERTIFIED DOC',
+                'doc-title': '510(k) Premarket Notification',
+                'doc-agency': 'U.S. Food and Drug Administration',
+                'doc-placeholder': 'Enter data to generate certified documentation...',
+                'processing': 'Generating certified document...'
+            }
+        };
+
+        // Logs are dynamic based on language
+        const logsConfig = {
+            'zh-TW': [
+                { msg: "正在初始化映射引擎...", type: "info" },
+                { msg: "載入 FDA 510(k) 約束庫 v1.0...", type: "info" },
+                { msg: "掃描輸入中的關鍵參數...", type: "info" },
+                { msg: "分析實質等同性 (SE)...", type: "info" },
+                { msg: "偵測到：缺少 Predicate K-number。應用約束條件...", type: "warn" },
+                { msg: "過濾禁止的營銷術語...", type: "info" },
+                { msg: "對比 ISO 81060-2:2018 標準...", type: "info" },
+                { msg: "運行零幻覺驗證循環...", type: "info" },
+                { msg: "驗證數值一致性... [OK]", type: "success" },
+                { msg: "結構完整性檢查... [OK]", type: "success" },
+                { msg: "文件已認證。準備輸出。", type: "success" }
+            ],
+            'en': [
+                { msg: "Initializing Mapping Engine...", type: "info" },
+                { msg: "Loading FDA 510(k) Constraint Library v1.0...", type: "info" },
+                { msg: "Scanning input for critical parameters...", type: "info" },
+                { msg: "Analyzing Substantial Equivalence (SE)...", type: "info" },
+                { msg: "DETECTED: Missing Predicate K-number. Applying constraint...", type: "warn" },
+                { msg: "Filtering forbidden marketing terms...", type: "info" },
+                { msg: "Cross-referencing with ISO 81060-2:2018...", type: "info" },
+                { msg: "Running Zero-Hallucination Verification Loop...", type: "info" },
+                { msg: "Verifying numeric consistency... [OK]", type: "success" },
+                { msg: "Structural Integrity Check... [OK]", type: "success" },
+                { msg: "Document Certified. Ready for output.", type: "success" }
+            ]
+        };
+
+        function applyTranslation() {
+            const lang = navigator.language.startsWith("zh") ? "zh-TW" : "en";
+            const dict = i18n[lang];
+            
+            Object.keys(dict).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'TEXTAREA') {
+                        el.placeholder = dict[id];
+                    } else {
+                        el.innerHTML = dict[id];
+                    }
+                }
+            });
+            return lang;
+        }
+        
+        document.addEventListener("DOMContentLoaded", applyTranslation);
 
         async function startProcessing() {
+            const lang = navigator.language.startsWith("zh") ? "zh-TW" : "en";
+            const dict = i18n[lang];
             const input = document.getElementById('inputData').value;
-            if(!input) return alert("Please enter some data first.");
+            if(!input) return alert(lang === "zh-TW" ? "請先輸入數據" : "Please enter some data first.");
 
             const logArea = document.getElementById('logArea');
             const docContent = document.getElementById('docContent');
             const stamp = document.getElementById('stamp');
             
             logArea.innerHTML = "";
-            docContent.innerHTML = "Generating certified document...";
+            docContent.innerHTML = dict['processing'];
             stamp.style.opacity = "0";
 
-            for (let log of logs) {
+            const currentLogs = logsConfig[lang];
+            for (let log of currentLogs) {
                 await new Promise(r => setTimeout(r, Math.random() * 600 + 300));
                 const div = document.createElement('div');
                 div.className = `log-entry log-${log.type}`;
