@@ -310,6 +310,7 @@
                 'input-subtitle': '原始數據',
                 'input-placeholder': '請在此輸入碎片化的技術數據... 例如：BP-Next Gen, accuracy 2.5mmHg, ISO 81060, N=85...',
                 'btn-run': '運行映射引擎',
+                'btn-run-loading': '正在處理...',
                 'engine-title': '合規引擎',
                 'engine-subtitle': '實時日誌',
                 'log-waiting': '等待輸入以初始化引擎...',
@@ -328,6 +329,7 @@
                 'input-subtitle': 'RAW DATA',
                 'input-placeholder': 'Enter fragmented technical data here... Example: BP-Next Gen, accuracy 2.5mmHg, ISO 81060, N=85...',
                 'btn-run': 'Run Mapping Engine',
+                'btn-run-loading': 'Processing...',
                 'engine-title': 'Compliance Engine',
                 'engine-subtitle': 'LIVE LOGS',
                 'log-waiting': 'Waiting for input to initialize engine...',
@@ -415,41 +417,59 @@
         async function startProcessing() {
             const lang = navigator.language.startsWith("zh") ? "zh-TW" : "en";
             const dict = i18n[lang];
-            const input = document.getElementById('inputData').value;
-            if(!input) return alert(lang === "zh-TW" ? "請先輸入數據" : "Please enter some data first.");
+            const inputElement = document.getElementById('inputData');
+            const runBtn = document.getElementById('btn-run');
+            const input = inputElement.value;
 
-            const logArea = document.getElementById('logArea');
-            const docContent = document.getElementById('docContent');
-            const stamp = document.getElementById('stamp');
-            
-            logArea.innerHTML = "";
-            docContent.innerHTML = dict['processing'];
-            stamp.style.opacity = "0";
-
-            const currentLogs = logsConfig[lang];
-            for (let log of currentLogs) {
-                await new Promise(r => setTimeout(r, Math.random() * 600 + 300));
-                const div = document.createElement('div');
-                div.className = `log-entry log-${log.type}`;
-                div.innerText = `> ${log.msg}`;
-                logArea.appendChild(div);
-                logArea.scrollTop = logArea.scrollHeight;
+            if(!input) {
+                alert(lang === "zh-TW" ? "請先輸入數據" : "Please enter some data first.");
+                return;
             }
 
-            docContent.innerHTML = `
-                <p><strong>1. Device Description</strong><br>
-                The device is a non-invasive medical instrument intended for physiological monitoring. The system incorporates high-precision sensors validated against industrial standards.</p>
+            try {
+                // UI Immediate Feedback
+                runBtn.disabled = true;
+                runBtn.innerText = dict['btn-run-loading'];
+
+                const logArea = document.getElementById('logArea');
+                const docContent = document.getElementById('docContent');
+                const stamp = document.getElementById('stamp');
                 
-                <p><strong>2. Predicate Device</strong><br>
-                The subject device is substantially equivalent to the laised predicate (K-Number: Pending/Referenced).</p>
-                
-                <p><strong>3. Performance Testing</strong><br>
-                Validation was conducted per ISO standards. All critical metrics remained within acceptable tolerances. Mean error verified at &lt; 3% variance.</p>
-                
-                <p><strong>4. Conclusion</strong><br>
-                The device meets all necessary FDA 510(k) requirements for substantial equivalence.</p>
-            `;
-            stamp.style.opacity = "1";
+                logArea.innerHTML = "";
+                docContent.innerHTML = dict['processing'];
+                stamp.style.opacity = "0";
+
+                const currentLogs = logsConfig[lang];
+                for (let log of currentLogs) {
+                    await new Promise(r => setTimeout(r, Math.random() * 600 + 300));
+                    const div = document.createElement('div');
+                    div.className = `log-entry log-${log.type}`;
+                    div.innerText = `> ${log.msg}`;
+                    logArea.appendChild(div);
+                    logArea.scrollTop = logArea.scrollHeight;
+                }
+
+                docContent.innerHTML = `
+                    <p><strong>1. Device Description</strong><br>
+                    The device is a non-invasive medical instrument intended for physiological monitoring. The system incorporates high-precision sensors validated against industrial standards.</p>
+                    
+                    <p><strong>2. Predicate Device</strong><br>
+                    The subject device is substantially equivalent to the laised predicate (K-Number: Pending/Referenced).</p>
+                    
+                    <p><strong>3. Performance Testing</strong><br>
+                    Validation was conducted per ISO standards. All critical metrics remained within acceptable tolerances. Mean error verified at &lt; 3% variance.</p>
+                    
+                    <p><strong>4. Conclusion</strong><br>
+                    The device meets all necessary FDA 510(k) requirements for substantial equivalence.</p>
+                `;
+                stamp.style.opacity = "1";
+            } catch (error) {
+                console.error("Engine Error:", error);
+                alert("Engine failure: " + error.message);
+            } finally {
+                runBtn.disabled = false;
+                runBtn.innerText = dict['btn-run'];
+            }
         }
     </script>
 </body>
