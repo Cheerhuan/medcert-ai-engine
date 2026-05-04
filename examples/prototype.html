@@ -32,11 +32,30 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-x: hidden;
         }
         h1, h2, h3, .panel-header { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             font-weight: 800; 
+        }
+        @media (max-width: 1024px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+            main {
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                overflow: visible;
+            }
+            .panel {
+                margin-bottom: 1.5rem;
+                height: auto;
+            }
+            .output-area {
+                padding: 1.5rem;
+            }
         }
 
         /* Header */
