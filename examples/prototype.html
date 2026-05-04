@@ -427,7 +427,6 @@
             }
 
             try {
-                // UI Immediate Feedback
                 runBtn.disabled = true;
                 runBtn.innerText = dict['btn-run-loading'];
 
@@ -438,6 +437,22 @@
                 logArea.innerHTML = "";
                 docContent.innerHTML = dict['processing'];
                 stamp.style.opacity = "0";
+
+                // --- Dynamic Mapping Engine Simulation ---
+                const mappings = {
+                    material: { pattern: /(ABS\s*\+\s*PC|醫療級\s*ABS)/i, replacement: "Biocompatible medical-grade polymer (ABS+PC blend)" },
+                    frequency: { pattern: /(\d+(\.\d+)?\s*MHz)/gi, replacement: "Optimized broadband frequency range" },
+                    predicate: { pattern: /(GE\s*Healthcare\s*Vscan|Predicate\s*Device:\s*[^ \n\r]+)/i, replacement: "GE Healthcare Vscan" },
+                    accuracy: { pattern: /(\d+(\.\d+)?\s*%)/g, replacement: "Clinical validation accuracy" },
+                    standard: { pattern: /(ISO\s*\d+[-\d]*|IEC\s*\d+[-\d]*)/gi, replacement: "International Regulatory Standards" }
+                };
+
+                const extracted = {
+                    material: mappings.material.pattern.test(input) ? mappings.material.replacement : "Standard medical-grade housing",
+                    predicate: mappings.predicate.pattern.test(input) ? mappings.predicate.replacement : "Referenced predicate device",
+                    accuracy: (input.match(/(\d+(\.\d+)?\s*%)/g) || ["N/A"])[0],
+                    standards: (input.match(/(ISO\s*\d+[-\d]*|IEC\s*\d+[-\d]*)/gi) || ["ISO 13485"])[0]
+                };
 
                 const currentLogs = logsConfig[lang];
                 for (let log of currentLogs) {
@@ -451,16 +466,16 @@
 
                 docContent.innerHTML = `
                     <p><strong>1. Device Description</strong><br>
-                    The device is a non-invasive medical instrument intended for physiological monitoring. The system incorporates high-precision sensors validated against industrial standards.</p>
+                    The device incorporates ${extracted.material}, ensuring high biocompatibility and structural integrity. All materials are validated against ${extracted.standards}.</p>
                     
                     <p><strong>2. Predicate Device</strong><br>
-                    The subject device is substantially equivalent to the laised predicate (K-Number: Pending/Referenced).</p>
+                    The subject device is substantially equivalent to the predicate device: <strong>${extracted.predicate}</strong>. The AI-enhanced features provide clinical superiority without introducing new safety concerns.</p>
                     
                     <p><strong>3. Performance Testing</strong><br>
-                    Validation was conducted per ISO standards. All critical metrics remained within acceptable tolerances. Mean error verified at &lt; 3% variance.</p>
+                    Validation results demonstrate a clinical sensitivity/specificity of <strong>${extracted.accuracy}</strong>. All performance metrics exceed the threshold required by the FDA for 510(k) clearance.</p>
                     
                     <p><strong>4. Conclusion</strong><br>
-                    The device meets all necessary FDA 510(k) requirements for substantial equivalence.</p>
+                    Based on the comparative analysis, the device meets all necessary regulatory requirements for substantial equivalence.</p>
                 `;
                 stamp.style.opacity = "1";
             } catch (error) {
