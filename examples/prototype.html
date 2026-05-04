@@ -142,7 +142,7 @@
         .btn-process {
             background: var(--primary);
             color: white;
-            border: none;
+            border: 2px solid var(--primary);
             padding: 1rem;
             font-weight: 800;
             cursor: pointer;
@@ -156,6 +156,27 @@
             background: var(--primary-dark); 
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-radius: 12px;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .btn-secondary:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+        .input-actions {
+            display: flex;
+            gap: 1rem;
         }
 
         /* Engine Zone */
@@ -242,7 +263,10 @@
             </div>
             <div class="input-area">
                 <textarea id="inputData" placeholder="Enter fragmented technical data here..."></textarea>
-                <button id="btn-run" class="btn-process" onclick="startProcessing()">Run Mapping Engine</button>
+                <div class="input-actions">
+                    <button id="btn-run" class="btn-process" onclick="startProcessing()">Run Mapping Engine</button>
+                    <button id="btn-demo" class="btn-secondary" onclick="loadDemoData()">Load Demo Case</button>
+                </div>
             </div>
         </div>
 
@@ -345,6 +369,30 @@
             ]
         };
 
+        function loadDemoData() {
+            const demoData = `[PROJ_ID: MED-2026-US]
+--- 硬件规格笔記 ---
+- 外壳材质: 使用医疗级 ABS + PC 混合物, 已通过 ISO 10993-5 细胞毒性测试 (Pass).
+- 探头频率: 2.5MHz - 10MHz 可调. 
+- 密封等级: IPX7 (可浸水 1 米, 30 分钟), 测试日期 2026-04-12.
+
+--- 软件/AI 逻辑 ---
+- 算法版本: v4.2.1-beta. 
+- 功能: 自动侦测心脏瓣膜钙化 (Calcification Detection).
+- 准確率: 灵敏度 94.2%, 特异性 89.1% (基于 500 例临床样本).
+- 延迟: 实时处理延迟 < 120ms.
+
+--- 风险评估碎片 ---
+- 潜在风险: 探头过热 (Temperature spike). 
+- 缓解措施: 内置 NTC 热敏电阻, 温度超过 42°C 自动切断电源并报警.
+- 电磁兼容: 通过 IEC 60601-1-2 第 4 版测试.
+
+--- 竞争对手对比 (Predicate Device) ---
+- 参考设备: GE Healthcare Vscan. 
+- 差异点: 本产品增加了 AI 自动量测功能, 降低了对操作者经验的依赖.`;
+            document.getElementById('inputData').value = demoData;
+        }
+        
         function applyTranslation() {
             const lang = navigator.language.startsWith("zh") ? "zh-TW" : "en";
             const dict = i18n[lang];
